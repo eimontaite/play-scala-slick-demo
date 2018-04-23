@@ -7,24 +7,25 @@
 @request.messages(key)
 }
 
-@main("Welcome to Play") {
-@form(routes.PersonController.addPerson()) {
-@inputText(person("name"))
-@inputText(person("middleName"), '_label -> "Middle name")
-@inputText(person("age"))
-@CSRF.formField
+<div class="container-fluid">
+    @main("Welcome to Play") {
+    @form(routes.PersonController.addPerson()) {
+    @inputText(person("name"))
+    @inputText(person("middleName"), '_label -> "Middle name")
+    @inputText(person("age"))
+    @CSRF.formField
 
-<div class="buttons">
-    <input type="submit" value="Add Person"/>
-</div>
+    <div class="buttons">
+        <input type="submit" value="Add Person"/>
+    </div>
 
-<h1>People</h1>
-<table>
+<h3>People</h3>
+<table class="table-striped">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Middle name</th>
-        <th>Age</th>
+        <th scope="col">Name</th>
+        <th scope="col">Middle name</th>
+        <th scope="col">Age</th>
     </tr>
     </thead>
     <tbody>
@@ -37,7 +38,7 @@
     }
     </tbody>
 </table>
+</div>
 }
-
 }
 

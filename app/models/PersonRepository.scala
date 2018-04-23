@@ -73,32 +73,19 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
       ) += (name, middleName, age)
   }
 
-  //
-  //  /**
-  //    * Edit form for existing person
-  //    *
-  //    * @param id Id of the person
-  //    */
-  //  def edit(id: Long) = Action {
-  //    Person.findById(id).map { person =>
-  //      Ok(html.editForm(id, personForm.fill(person)))
-  //    }.getOrElse(NotFound)
-  //  }
-  //
-  //  /**
-  //    * Handle the 'edit form' submission
-  //    *
-  //    * @param id Id of the person
-  //    */
-  //  def update(id: Long) = Action { implicit request =>
-  //    personForm.bindFromRequest.fold(
-  //      formWithErrors => BadRequest(html.editForm(id, formWithErrors)),
-  //      person => {
-  //        Person.update(id, person)
-  //        Redirect(routes.PersonController.index).flashing("success" -> "Person has been updated".format(person.name))
-  //      }
-  //    )
-  //  }
+//
+//    /**
+//      * Edit form for existing person
+//      *
+//      * @param id Id of the person
+//      */
+//    def editForm(id: Long) = Action {
+//      Person.findById(id).map { person =>
+//        Ok(html.editForm(id, personForm.fill(person)))
+//      }.getOrElse(NotFound)
+//    }
+
+
 
   /**
     * List all the people in the database.

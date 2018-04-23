@@ -35,7 +35,7 @@ class PersonController @Inject()(repo: PersonRepository,
 //    Ok(views.html.index(personForm))
 //  }
 
-  private def personsResult(form: Form[CreatePersonForm]) = {
+  private def personsResult(form: Form[CreatePersonForm])(implicit request: play.api.mvc.MessagesRequestHeader) = {
     for {
       persons <- repo.list()
     } yield {
@@ -80,6 +80,32 @@ class PersonController @Inject()(repo: PersonRepository,
       Ok(Json.toJson(people))
     }
   }
+
+  /**
+    * Display the 'edit form' of a existing Computer.
+    *
+    * @param id Id of the computer to edit
+    */
+//  def edit(id: Long) = Action {
+//    Person.findById(id).map { person =>
+//      Ok(html.editForm(id, person.fill(person)))
+//    }.getOrElse(NotFound)
+//  }
+//
+//  /**
+//    * Handle the 'edit form' submission
+//    *
+//    * @param id Id of the person
+//    */
+//  def update(id: Long) = Action { implicit request =>
+//    personForm.bindFromRequest.fold(
+//      formWithErrors => BadRequest(html.editForm(id, formWithErrors)),
+//      person => {
+//        Person.update(id, person)
+//        Redirect(routes.PersonController.index).flashing("success" -> "Person has been updated".format(person.name))
+//      }
+//    )
+//  }
 
 }
 /**
