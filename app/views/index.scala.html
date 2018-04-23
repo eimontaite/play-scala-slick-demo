@@ -1,19 +1,43 @@
-@(person: Form[CreatePersonForm])(implicit request: MessagesRequestHeader)
-
 @import helper._
+@import scala.concurrent.Future
+
+@(person: Form[CreatePersonForm], people: Seq[Person])(implicit request: MessagesRequestHeader)
 
 @request.flash.get("success").map { key =>
-   @request.messages(key)
+@request.messages(key)
 }
 
 @main("Welcome to Play") {
-  @form(routes.PersonController.addPerson()) {
-		@inputText(person("name"))
-		@inputText(person("age"))
-		@CSRF.formField
+@form(routes.PersonController.addPerson()) {
+@inputText(person("name"))
+@inputText(person("middleName"), '_label -> "Middle name")
+@inputText(person("age"))
+@CSRF.formField
 
-		<div class="buttons">
-			<input type="submit" value="Add Person"/>
-		</div>
-	}
+<div class="buttons">
+    <input type="submit" value="Add Person"/>
+</div>
+
+<h1>People</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Middle name</th>
+        <th>Age</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for(peep <- people) {
+    <tr>
+        <td>@peep.name</td>
+        <td>@peep.middleName</td>
+        <td>@peep.age</td>
+    </tr>
+    }
+    </tbody>
+</table>
 }
+
+}
+
