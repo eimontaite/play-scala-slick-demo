@@ -28,13 +28,6 @@ class PersonController @Inject()(repo: PersonRepository,
     )(CreatePersonForm.apply)(CreatePersonForm.unapply)
   }
 
-  /**
-    * The index action.
-    */
-//  def index = Action { implicit request =>
-//    Ok(views.html.index(personForm))
-//  }
-
   private def personsResult(form: Form[CreatePersonForm])(implicit request: play.api.mvc.MessagesRequestHeader) = {
     for {
       persons <- repo.list()
@@ -43,10 +36,12 @@ class PersonController @Inject()(repo: PersonRepository,
     }
   }
 
+  /**
+    * The index action.
+    */
   def index = Action.async { implicit request =>
     personsResult(personForm)
   }
-
 
   /**
     * The add person action.
@@ -74,7 +69,7 @@ class PersonController @Inject()(repo: PersonRepository,
 
   /**
     * A REST endpoint that gets all the people as JSON.
-//    */
+    * //    */
   def getPersons = Action.async { implicit request =>
     repo.list().map { people =>
       Ok(Json.toJson(people))
@@ -82,37 +77,47 @@ class PersonController @Inject()(repo: PersonRepository,
   }
 
   /**
-    * Display the 'edit form' of a existing Computer.
+    * Display the edit form
     *
-    * @param id Id of the computer to edit
     */
-//  def edit(id: Long) = Action {
-//    Person.findById(id).map { person =>
-//      Ok(html.editForm(id, person.fill(person)))
-//    }.getOrElse(NotFound)
-//  }
-//
-//  /**
-//    * Handle the 'edit form' submission
-//    *
-//    * @param id Id of the person
-//    */
-//  def update(id: Long) = Action { implicit request =>
-//    personForm.bindFromRequest.fold(
-//      formWithErrors => BadRequest(html.editForm(id, formWithErrors)),
-//      person => {
-//        Person.update(id, person)
-//        Redirect(routes.PersonController.index).flashing("success" -> "Person has been updated".format(person.name))
-//      }
-//    )
-//  }
+  def editPerson(id: Long) = Action.async { implicit request =>
+    val persons = for {
+      person <- repo.findById(id)
+    } yield person
 
+    persons.map {
+      case person =>
+        person match {
+          case Some(p) => Ok(views.html.editForm(id, personForm.fill(CreatePersonForm(p.name, p.middleName, p.age))))
+          case None => NotFound
+        }
+    }
+  }
+
+  /**
+    * Handle the submitted edit form
+    *
+    */
+  def update(id: Long) = Action.async { implicit request =>
+    personForm.bindFromRequest.fold(
+      errorForm => {
+        personsResult(errorForm)
+      },
+      person => {
+        repo.update(id, person).map { _ =>
+          Redirect(routes.PersonController.index).flashing("success" -> "Person %s has been updated".format(person.name))
+        }
+      }
+    )
+  }
 }
-/**
-  * The create person form.
-  *
-  * Generally for forms, you should define separate objects to your models, since forms very often need to present data
-  * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
-  * that is generated once it's created.
-  */
-case class CreatePersonForm(name: String, middleName: Option[String], age: Int)
+
+  /**
+    * The create person form.
+    *
+    * Generally for forms, you should define separate objects to your models, since forms very often need to present data
+    * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
+    * that is generated once it's created.
+    */
+  case class CreatePersonForm(name: String, middleName: Option[String], age: Int)
+

@@ -1,0 +1,26 @@
+@(id: Long, personForm: Form[CreatePersonForm])(implicit request: MessagesRequestHeader)
+
+@import helper._
+@import scala.concurrent.Future
+
+@request.flash.get("success").map { key =>
+@request.messages(key)
+}
+
+@main("Welcome to Play") {
+
+@form(routes.PersonController.update(id)) {
+@inputText(personForm("name"))
+@inputText(personForm("middleName"), '_label -> "Middle name")
+@inputText(personForm("age"))
+@CSRF.formField
+
+<h3>Edit person</h3>
+
+<div class="actions">
+    <input type="submit" value="Save" class="btn primary">
+</div>
+
+}
+
+}

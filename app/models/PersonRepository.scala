@@ -4,7 +4,6 @@ import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
-
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
@@ -73,18 +72,19 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
       ) += (name, middleName, age)
   }
 
-//
-//    /**
-//      * Edit form for existing person
-//      *
-//      * @param id Id of the person
-//      */
-//    def editForm(id: Long) = Action {
-//      Person.findById(id).map { person =>
-//        Ok(html.editForm(id, personForm.fill(person)))
-//      }.getOrElse(NotFound)
-//    }
+  /**
+    * Get person by ID
+    */
+  def findById(id: Long) =
+    db.run(people.filter(_.id === id).result.headOption)
 
+  /**
+    * Update a person
+    */
+  def update(id: Long, person: Person) = {
+    val personToUpdate: Person = person.copy((id))
+    db.run(people.filter(_.id === id).update(personToUpdate)).map(_ => ())
+  }
 
 
   /**
@@ -95,9 +95,5 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
   }
 }
 
-//  def list(): Future[Seq[Person]] = {
-//    db.run(people.result)
-//  }
-//}
 
 

@@ -1,7 +1,7 @@
+@(person: Form[CreatePersonForm], people: Seq[Person])(implicit request: MessagesRequestHeader)
+
 @import helper._
 @import scala.concurrent.Future
-
-@(person: Form[CreatePersonForm], people: Seq[Person])(implicit request: MessagesRequestHeader)
 
 @request.flash.get("success").map { key =>
 @request.messages(key)
@@ -19,25 +19,25 @@
         <input type="submit" value="Add Person"/>
     </div>
 
-<h3>People</h3>
-<table class="table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Middle name</th>
-        <th scope="col">Age</th>
-    </tr>
-    </thead>
-    <tbody>
-    @for(peep <- people) {
-    <tr>
-        <td>@peep.name</td>
-        <td>@peep.middleName</td>
-        <td>@peep.age</td>
-    </tr>
-    }
-    </tbody>
-</table>
+    <h3>People</h3>
+    <table class="table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Middle name</th>
+            <th scope="col">Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for(peep <- people) {
+        <tr>
+            <td>@peep.name</td>
+            <td>@peep.middleName</td>
+            <td>@peep.age</td>
+        </tr>
+        }
+        </tbody>
+    </table>
 </div>
 }
 }
