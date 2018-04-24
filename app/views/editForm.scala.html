@@ -7,20 +7,20 @@
 @request.messages(key)
 }
 
-@main("Welcome to Play") {
+<div class="container-fluid">
+    @main("Welcome to Play") {
+    <h3>Edit person</h3>
+    @form(routes.PersonController.update(id)) {
+    @inputText(personForm("name"))
+    @inputText(personForm("middleName"), '_label -> "Middle name")
+    @inputText(personForm("age"))
+    @CSRF.formField
 
-@form(routes.PersonController.update(id)) {
-@inputText(personForm("name"))
-@inputText(personForm("middleName"), '_label -> "Middle name")
-@inputText(personForm("age"))
-@CSRF.formField
 
-<h3>Edit person</h3>
-
-<div class="actions">
-    <input type="submit" value="Save" class="btn primary">
+    <div class="actions">
+        <input type="submit" value="Save" class="btn btn-success">
+    </div>
 </div>
-
 }
 
 }

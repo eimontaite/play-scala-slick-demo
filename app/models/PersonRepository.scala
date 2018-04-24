@@ -81,9 +81,8 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
   /**
     * Update a person
     */
-  def update(id: Long, person: Person) = {
-    val personToUpdate: Person = person.copy((id))
-    db.run(people.filter(_.id === id).update(personToUpdate)).map(_ => ())
+  def update(id: Long, person: Person): Future[Int] = {
+    db.run(people.filter(_.id === id).update(person))
   }
 
 

@@ -103,9 +103,9 @@ class PersonController @Inject()(repo: PersonRepository,
       errorForm => {
         personsResult(errorForm)
       },
-      person => {
-        repo.update(id, person).map { _ =>
-          Redirect(routes.PersonController.index).flashing("success" -> "Person %s has been updated".format(person.name))
+      createPersonForm => {
+        repo.update(id, createPersonForm.toModel(id)).map { _ =>
+          Redirect(routes.PersonController.index).flashing("success" -> "Person has been updated")
         }
       }
     )
@@ -119,5 +119,14 @@ class PersonController @Inject()(repo: PersonRepository,
     * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
     * that is generated once it's created.
     */
-  case class CreatePersonForm(name: String, middleName: Option[String], age: Int)
+  case class CreatePersonForm(name: String, middleName: Option[String], age: Int) {
+    def toModel(id: Long): Person = {
+      Person(
+        id,
+        name,
+        middleName,
+        age
+      )
+    }
+  }
 
