@@ -79,7 +79,7 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
     db.run(people.filter(_.id === id).result.headOption)
 
   /**
-    * Update a person
+    * Update a person. Remove unnecessary mapping; better to return something meaningful than a Unit
     */
   def update(id: Long, person: Person): Future[Int] = {
     db.run(people.filter(_.id === id).update(person))

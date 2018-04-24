@@ -117,7 +117,7 @@ class PersonController @Inject()(repo: PersonRepository,
     *
     * Generally for forms, you should define separate objects to your models, since forms very often need to present data
     * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
-    * that is generated once it's created.
+    * that is generated once it's created. Method to extract Person(model) from the form
     */
   case class CreatePersonForm(name: String, middleName: Option[String], age: Int) {
     def toModel(id: Long): Person = {
