@@ -14,7 +14,7 @@
     @inputText(person("middleName"), '_label -> "Middle name")
     @inputText(person("age"))
     @select(field = person("cityId"),
-    options = cities.map(city => city.id.toString -> city.name))
+    options = cities.map(city => city.id.toString -> city.name), '_label -> "City", '_default -> "Choose City")
     @CSRF.formField
 
     <div class="buttons">
@@ -33,19 +33,21 @@
             <th scope="col">Name</th>
             <th scope="col">Middle name</th>
             <th scope="col">Age</th>
+            <th scope="col">City</th>
         </tr>
         </thead>
-        <tbody>
-        @for(peep <- people) {
+      @for(peep <- people) {
         <tr>
             <td><a href="@routes.PersonController.editPerson(peep.id)">@peep.name</a></td>
             <td>@peep.middleName</td>
             <td>@peep.age</td>
+            @for(city <- cities) {
+            <td>@city.name</td>
+            }
         </tr>
         }
         </tbody>
     </table>
 </div>
-
 }
 

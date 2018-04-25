@@ -18,6 +18,23 @@
 
     </div>
 
+    <h3>Cities</h3>
+    <table class="table-striped table-condensed">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+        </tr>
+        </thead>
+        @for(city <- cities) {
+        <tr>
+            <td>@city.id</td>
+            <td>@city.name</td>
+            }
+        </tr>
+        </tbody>
+    </table>
+
 </div>
 }
 }

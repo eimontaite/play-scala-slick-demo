@@ -8,7 +8,7 @@ import play.api.data.validation.Constraints._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class PersonController @Inject()(repo: PersonRepository,
                                  cityRepo: CityRepository,
@@ -85,6 +85,9 @@ class PersonController @Inject()(repo: PersonRepository,
     val persons = for {
       person <- repo.findById(id)
     } yield person
+    val cities = for {
+      city <- cityRepo.findById(id)
+    } yield city
 
     persons.map {
       case person =>
