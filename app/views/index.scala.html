@@ -1,4 +1,4 @@
-@(person: Form[CreatePersonForm], people: Seq[Person])(implicit request: MessagesRequestHeader)
+@(person: Form[CreatePersonForm], people: Seq[Person], cities: Seq[City])(implicit request: MessagesRequestHeader)
 
 @import helper._
 @import scala.concurrent.Future
@@ -13,6 +13,8 @@
     @inputText(person("name"))
     @inputText(person("middleName"), '_label -> "Middle name")
     @inputText(person("age"))
+    @select(field = person("cityId"),
+    options = cities.map(city => city.id.toString -> city.name))
     @CSRF.formField
 
     <div class="buttons">
@@ -20,7 +22,9 @@
 
     </div>
     }
-    <a href="@routes.CityController.index"><button value="Add New City" class="btn btn-info">Add New City</button></a>
+    <a href="@routes.CityController.index">
+        <button value="Add New City" class="btn btn-info">Add New City</button>
+    </a>
 
     <h3>People</h3>
     <table class="table-striped table-condensed">

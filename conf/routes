@@ -7,6 +7,7 @@ GET     /                           controllers.PersonController.index
 POST    /persons                    controllers.PersonController.addPerson
 GET     /persons                    controllers.PersonController.getPersons
 GET     /city                       controllers.CityController.index
+GET     /cities                     controllers.CityController.getCities
 POST    /city/new                   controllers.CityController.addCity
 
 # Edit a person

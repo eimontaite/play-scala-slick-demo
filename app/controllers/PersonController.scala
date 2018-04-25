@@ -5,14 +5,13 @@ import models._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
-import play.api.i18n._
 import play.api.libs.json.Json
 import play.api.mvc._
-import views.html
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class PersonController @Inject()(repo: PersonRepository,
+                                 cityRepo: CityRepository,
                                  cc: MessagesControllerComponents
                                 )(implicit ec: ExecutionContext)
   extends MessagesAbstractController(cc) {
@@ -32,8 +31,9 @@ class PersonController @Inject()(repo: PersonRepository,
   private def personsResult(form: Form[CreatePersonForm])(implicit request: play.api.mvc.MessagesRequestHeader) = {
     for {
       persons <- repo.list()
+      cities <- cityRepo.list()
     } yield {
-      Ok(views.html.index(form, persons))
+      Ok(views.html.index(form, persons, cities))
     }
   }
 
