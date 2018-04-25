@@ -24,7 +24,8 @@ class PersonController @Inject()(repo: PersonRepository,
     mapping(
       "name" -> nonEmptyText,
       "middleName" -> optional(text),
-      "age" -> number.verifying(min(0), max(140))
+      "age" -> number.verifying(min(0), max(140)),
+      "cityId" -> longNumber
     )(CreatePersonForm.apply)(CreatePersonForm.unapply)
   }
 
@@ -59,7 +60,7 @@ class PersonController @Inject()(repo: PersonRepository,
       },
       // There were no errors in the form, so create the person.
       person => {
-        repo.create(person.name, person.middleName, person.age).map { _ =>
+        repo.create(person.name, person.middleName, person.age, person.cityId).map { _ =>
           // If successful, we simply redirect to the index page.
           Redirect(routes.PersonController.index).flashing("success" -> "user.created")
         }
@@ -88,7 +89,7 @@ class PersonController @Inject()(repo: PersonRepository,
     persons.map {
       case person =>
         person match {
-          case Some(p) => Ok(views.html.editForm(id, personForm.fill(CreatePersonForm(p.name, p.middleName, p.age))))
+          case Some(p) => Ok(views.html.editForm(id, personForm.fill(CreatePersonForm(p.name, p.middleName, p.age, p.cityId))))
           case None => NotFound
         }
     }
@@ -119,13 +120,14 @@ class PersonController @Inject()(repo: PersonRepository,
     * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
     * that is generated once it's created. Method to extract Person(model) from the form
     */
-  case class CreatePersonForm(name: String, middleName: Option[String], age: Int) {
+  case class CreatePersonForm(name: String, middleName: Option[String], age: Int, cityId: Long) {
     def toModel(id: Long): Person = {
       Person(
         id,
         name,
         middleName,
-        age
+        age,
+        cityId
       )
     }
   }

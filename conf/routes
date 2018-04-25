@@ -4,8 +4,10 @@
 
 # Home page
 GET     /                           controllers.PersonController.index
-POST    /persons                     controllers.PersonController.addPerson
+POST    /persons                    controllers.PersonController.addPerson
 GET     /persons                    controllers.PersonController.getPersons
+GET     /city/                      controllers.CityController.index
+POST    /city/new                   controllers.CityController.addCity
 
 # Edit a person
 GET     /persons/:id                controllers.PersonController.editPerson(id:Long)

@@ -38,6 +38,9 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
     /** The middle name column */
     def middleName = column[Option[String]]("middle_name")
 
+    /** The city column */
+    def cityId = column[Long]("city_id")
+
     /**
       * This is the tables default "projection".
       *
@@ -46,7 +49,7 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
       * In this case, we are simply passing the id, name and page parameters to the Person case classes
       * apply and unapply methods.
       */
-    def * = (id, name, middleName, age) <> ((Person.apply _).tupled, Person.unapply)
+    def * = (id, name, middleName, age, cityId) <> ((Person.apply _).tupled, Person.unapply)
   }
 
   /**
@@ -60,16 +63,16 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
     * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
     * id for that person.
     */
-  def create(name: String, middleName: Option[String], age: Int): Future[Person] = db.run {
+  def create(name: String, middleName: Option[String], age: Int, cityId: Long): Future[Person] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
-    (people.map(p => (p.name, p.middleName, p.age))
+    (people.map(p => (p.name, p.middleName, p.age, p.cityId))
       // Now define it to return the id, because we want to know what id was generated for the person
       returning people.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into ((nameAge, id) => Person(id, nameAge._1, nameAge._2, nameAge._3))
+      into ((nameAge, id) => Person(id, nameAge._1, nameAge._2, nameAge._3, nameAge._4))
       // And finally, insert the person into the database
-      ) += (name, middleName, age)
+      ) += (name, middleName, age, cityId)
   }
 
   /**
