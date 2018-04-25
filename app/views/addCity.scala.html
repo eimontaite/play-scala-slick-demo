@@ -1,0 +1,24 @@
+@(city: Form[CreateCityForm], cities: Seq[City])(implicit request: MessagesRequestHeader)
+
+@import helper._
+@import scala.concurrent.Future
+
+@request.flash.get("success").map { key =>
+@request.messages(key)
+}
+
+<div class="container-fluid">
+    @main("Welcome to Play") {
+    @form(routes.CityController.addCity()) {
+    @inputText(city("name"))
+    @CSRF.formField
+
+    <div class="buttons">
+        <input type="submit" value="Add City" class="btn btn-success"/>
+
+    </div>
+
+</div>
+}
+}
+
