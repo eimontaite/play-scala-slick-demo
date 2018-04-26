@@ -41,11 +41,9 @@
             <td><a href="@routes.PersonController.editPerson(peep.id)">@peep.name</a></td>
             <td>@peep.middleName</td>
             <td>@peep.age</td>
-            @for(city <- cities) {
-            <td>@city.name</td>
+            <td>@cities.filter(_.id == peep.cityId).map(_.name)</td>
             }
         </tr>
-        }
         </tbody>
     </table>
 </div>

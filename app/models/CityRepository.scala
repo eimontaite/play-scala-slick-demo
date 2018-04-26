@@ -57,6 +57,16 @@ class CityRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
   def list(): Future[Seq[City]] = db.run {
     cities.result
   }
+
+//  /**
+//    * List city options
+//    *
+//    */
+//
+//  def options() = {
+//    list().map(city => city.id.toString -> city.name)
+//  }
+
 }
 
 
