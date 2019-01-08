@@ -1,4 +1,4 @@
-@(id: Long, personForm: Form[CreatePersonForm])(implicit request: MessagesRequestHeader)
+@(id: Long, person: Form[CreatePersonForm], cities: Seq[City])(implicit request: MessagesRequestHeader)
 
 @import helper._
 @import scala.concurrent.Future
@@ -11,9 +11,12 @@
     @main("Welcome to Play") {
     <h3>Edit person</h3>
     @form(routes.PersonController.update(id)) {
-    @inputText(personForm("name"))
-    @inputText(personForm("middleName"), '_label -> "Middle name")
-    @inputText(personForm("age"))
+    @inputText(person("name"))
+    @inputText(person("middleName"), '_label -> "Middle name")
+    @inputText(person("age"))
+    @inputText(person("phone"), '_label -> "Phone number")
+    @select(field = person("cityId"),
+    options = cities.map(city => city.id.toString -> city.name), '_label -> "City", '_default -> "Choose City")
     @CSRF.formField
 
 

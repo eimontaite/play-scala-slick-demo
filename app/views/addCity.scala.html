@@ -1,4 +1,4 @@
-@(city: Form[CreateCityForm], cities: Seq[City])(implicit request: MessagesRequestHeader)
+@(city: Form[CreateCityForm], cities: Seq[City])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @import helper._
 @import scala.concurrent.Future
@@ -15,27 +15,29 @@
 
     <div class="buttons">
         <input type="submit" value="Add City" class="btn btn-success"/>
-
     </div>
-
+}
     <h3>Cities</h3>
     <table class="table-striped table-condensed">
         <thead>
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Name</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         @for(city <- cities) {
         <tr>
             <td>@city.id</td>
             <td>@city.name</td>
+            <td><a href="@routes.CityController.deleteCity(city.id)"><button class="btn btn-danger">Delete</button></a></td>
             }
         </tr>
         </tbody>
     </table>
+    <a href="@routes.PersonController.index"><button class="btn btn-info">Back</button></a>
 
 </div>
-}
+
 }
 

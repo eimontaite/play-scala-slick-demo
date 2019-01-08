@@ -4,14 +4,17 @@
 
 # Home page
 GET     /                           controllers.PersonController.index
-POST    /persons                    controllers.PersonController.addPerson
-GET     /persons                    controllers.PersonController.getPersons
+
+# Persons
+POST    /persons/new                controllers.PersonController.addPerson
+GET     /persons/edit/:id           controllers.PersonController.editPerson(id:Long)
+POST    /persons/:id                controllers.PersonController.update(id:Long)
+GET     /persons/delete/:id         controllers.PersonController.deletePerson(id:Long)
+
+# Cities
 GET     /cities                     controllers.CityController.index
 POST    /cities/new                 controllers.CityController.addCity
-
-# Edit a person
-GET     /persons/:id                controllers.PersonController.editPerson(id:Long)
-POST    /persons/:id                controllers.PersonController.update(id:Long)
+GET     /cities/delete/:id          controllers.CityController.deleteCity(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

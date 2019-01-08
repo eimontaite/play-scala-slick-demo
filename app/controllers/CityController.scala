@@ -46,13 +46,13 @@ class CityController @Inject()(repo: CityRepository,
       },
       city => {
         repo.create(city.name).map { _ =>
-          Redirect(routes.PersonController.index).flashing("success" -> "City has been created")
+          Redirect(routes.CityController.index).flashing("success" -> "City has been created")
         }
       }
     )
   }
 
-  /**
+  /**admin
     * A REST endpoint that gets all the cities as JSON.
     * //    */
   def getCities = Action.async { implicit request =>
@@ -61,6 +61,15 @@ class CityController @Inject()(repo: CityRepository,
     }
   }
 
+  /**
+    * Delete a city
+    */
+
+  def deleteCity(id: Long) = Action.async { implicit request =>
+    repo.delete(id).map {_ =>
+      Redirect(routes.CityController.index).flashing("success" -> "City has been deleted")
+    }
+  }
 }
 
 case class CreateCityForm(name: String) {

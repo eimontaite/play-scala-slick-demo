@@ -1,6 +1,7 @@
 package controllers
 
 import javax.inject._
+import java.sql.Date
 import models._
 import play.api.data.Form
 import play.api.data.Forms._
@@ -68,33 +69,31 @@ class PersonController @Inject()(repo: PersonRepository,
     )
   }
 
-  /**
-    * A REST endpoint that gets all the people as JSON.
-    * //    */
-  def getPersons = Action.async { implicit request =>
-    repo.list().map { people =>
-      Ok(Json.toJson(people))
-    }
-  }
+//  /**
+//    * A REST endpoint that gets all the people as JSON.
+//    * //    */
+//  def getPersons = Action.async { implicit request =>
+//    repo.list().map { people =>
+//      Ok(Json.toJson(people))
+//    }
+//  }
 
   /**
     * Display the edit form
     *
     */
   def editPerson(id: Long) = Action.async { implicit request =>
-    val persons = for {
-      person <- repo.findById(id)
-    } yield person
-    val cities = for {
-      city <- cityRepo.findById(id)
-    } yield city
 
-    persons.map {
-      case person =>
-        person match {
-          case Some(p) => Ok(views.html.editForm(id, personForm.fill(CreatePersonForm(p.name, p.middleName, p.age, p.cityId))))
-          case None => NotFound
-        }
+    for {
+      person <- repo.findById(id)
+      cities <- cityRepo.list()
+    } yield {
+      person match {
+        case Some(p) =>
+          Ok(views.html.editForm(id, personForm.fill(CreatePersonForm(p.name, p.middleName, p.age, p.cityId)), cities))
+        case _ =>
+          NotFound
+      }
     }
   }
 
@@ -114,24 +113,34 @@ class PersonController @Inject()(repo: PersonRepository,
       }
     )
   }
-}
 
   /**
-    * The create person form.
-    *
-    * Generally for forms, you should define separate objects to your models, since forms very often need to present data
-    * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
-    * that is generated once it's created. Method to extract Person(model) from the form
+    * Delete person
     */
-  case class CreatePersonForm(name: String, middleName: Option[String], age: Int, cityId: Long) {
-    def toModel(id: Long): Person = {
-      Person(
-        id,
-        name,
-        middleName,
-        age,
-        cityId
-      )
+
+  def deletePerson(id: Long) = Action.async { implicit request =>
+    repo.delete(id).map {_ =>
+        Redirect(routes.PersonController.index).flashing("success" -> "Person has been deleted")
     }
   }
+}
+
+/**
+  * The create person form.
+  *
+  * Generally for forms, you should define separate objects to your models, since forms very often need to present data
+  * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
+  * that is generated once it's created. Method to extract Person(model) from the form
+  */
+case class CreatePersonForm(name: String, middleName: Option[String], age: Int, cityId: Long) {
+  def toModel(id: Long): Person = {
+    Person(
+      id,
+      name,
+      middleName,
+      age,
+      cityId
+    )
+  }
+}
 

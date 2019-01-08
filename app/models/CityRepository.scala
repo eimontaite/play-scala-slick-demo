@@ -52,20 +52,27 @@ class CityRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
   }
 
   /**
+    * Delete a city
+    */
+  def delete(id: Long) = {
+    db.run(cities.filter(_.id === id).delete)
+  }
+
+  /**
     * List all the cities in the database.
     */
   def list(): Future[Seq[City]] = db.run {
     cities.result
   }
 
-//  /**
-//    * List city options
-//    *
-//    */
-//
-//  def options() = {
-//    list().map(city => city.id.toString -> city.name)
-//  }
+  /**
+    * List city options
+    *
+    */
+
+  //  def options() = {
+  //    list().map(city => city.id.toString -> city.name)
+  //  }
 
 }
 

@@ -12,6 +12,7 @@ create table "people" (
   "name" varchar not null,
   "age" int not null,
   "middle_name" varchar,
+  "phone" varchar,
   "city_id" bigint not null references cities(id)
 );
 

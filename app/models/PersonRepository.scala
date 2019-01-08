@@ -88,6 +88,12 @@ class PersonRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
     db.run(people.filter(_.id === id).update(person))
   }
 
+  /**
+    * Delete a person
+    */
+  def delete(id: Long) = {
+    db.run(people.filter(_.id === id).delete)
+  }
 
   /**
     * List all the people in the database.

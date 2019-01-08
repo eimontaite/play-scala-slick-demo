@@ -19,11 +19,10 @@
 
     <div class="buttons">
         <input type="submit" value="Add Person" class="btn btn-success"/>
-
     </div>
     }
     <a href="@routes.CityController.index">
-        <button value="Add New City" class="btn btn-info">Add New City</button>
+        <button class="btn btn-info">Add New City</button>
     </a>
 
     <h3>People</h3>
@@ -34,6 +33,7 @@
             <th scope="col">Middle name</th>
             <th scope="col">Age</th>
             <th scope="col">City</th>
+            <th scope="col"></th>
         </tr>
         </thead>
       @for(peep <- people) {
@@ -42,6 +42,7 @@
             <td>@peep.middleName</td>
             <td>@peep.age</td>
             <td>@cities.filter(_.id == peep.cityId).map(_.name)</td>
+            <td><a href="@routes.PersonController.deletePerson(peep.id)"><button class="btn btn-danger">Delete</button></a></td>
             }
         </tr>
         </tbody>
